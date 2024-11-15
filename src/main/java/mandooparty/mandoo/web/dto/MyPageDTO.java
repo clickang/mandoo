@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import mandooparty.mandoo.domain.enums.SellPostStatus;
 
 import java.time.LocalDate;
 
@@ -12,26 +13,8 @@ public class MyPageDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class MemberIdRequestDto{//myPageRequest
+    public static class MemberIdRequestDto{//myPage request
         private Long memberId;
     }
 
-    @Builder
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class MyPageResponseDto{
-        private Long sellPostId;
-        private String title;
-        private Integer price;
-        private String description;
-        private LocalDate createdAt;
-        private LocalDate modifiedAt;
-//        private SellPostStatus status;
-        private Long memberId;
-        private String city;
-        private String gu;
-        private String dong;
-        private Integer commentCount;
-    }
 }

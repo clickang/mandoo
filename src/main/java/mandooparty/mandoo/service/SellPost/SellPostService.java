@@ -13,4 +13,6 @@ public interface SellPostService {
 
     // 게시물 삭제
     void deleteSellPost(Long id);
+    // 게시물 업데이트
+    SellPostDTO.SellPostResponseDto updateSellPost(Long postId, SellPostDTO.SellPostUpdateDto request);
 }

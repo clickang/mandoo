@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -32,10 +33,6 @@ public class SellPostServiceImpl implements SellPostService{
     private final SellPostCategoryRepository sellPostCategoryRepository;
     private final CategoryRepository categoryRepository;
 
-
-
-
-
     @Override
     @Transactional
     public SellPostDTO.SellPostResponseDto SellPostcreate(SellPostDTO.SellPostCreateDto request) {
@@ -43,6 +40,13 @@ public class SellPostServiceImpl implements SellPostService{
         // memberId로 Member 조회
         Member member = memberRepository.findById(request.getMemberId())
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.MEMBER_NOT_FOUND));
+
+        boolean loginCheck = member.getIsLogin(); //로그인 여부
+
+        if(!loginCheck)
+        {
+            throw new GlobalException(GlobalErrorCode.ALREADY_LOGGED_OUT);
+        }
 
         // DTO를 엔티티로 변환
         SellPost sellPost = sellPostConverter.sellPostCreateDto(request, member);
@@ -79,6 +83,41 @@ public class SellPostServiceImpl implements SellPostService{
         // 엔티티를 DTO로 변환 후 반환
         return SellPostConverter.sellPostResponseDto(sellPost);
     }
+
+    @Override
+    @Transactional
+    public SellPostDTO.SellPostResponseDto updateSellPost(Long sellPostId, SellPostDTO.SellPostUpdateDto request) {
+        // 게시물 조회
+        SellPost sellPost = sellPostRepository.findById(sellPostId)
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.POST_NOT_FOUND));
+
+        if(!Objects.equals(request.getMemberId(), sellPost.getMember().getId()))
+        {
+            throw new GlobalException(GlobalErrorCode.MEMBER_NOT_AUTHORIZED);
+        }
+
+
+        // 카테고리 리스트 생성
+        List<SellPostCategory> categories = request.getCategoryIds().stream()
+                .map(categoryId -> sellPostCategoryRepository.findById(categoryId)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.CATEGORY_NOT_FOUND)))
+                .collect(Collectors.toList());
+
+        // 엔티티의 update 메서드를 사용하여 업데이트
+        sellPost.update(
+                request.getTitle(),
+                request.getPrice(),
+                request.getDescription(),
+                request.getCity(),
+                request.getGu(),
+                request.getDong(),
+                categories
+        );
+
+        // 5. 업데이트된 엔티티를 DTO로 변환하여 반환
+        return SellPostConverter.sellPostResponseDto(sellPost);
+    }
+
 
     @Override
     @Transactional

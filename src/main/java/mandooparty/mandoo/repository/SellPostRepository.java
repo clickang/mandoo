@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface SellPostRepository extends JpaRepository<SellPost, Long> {
     Optional<SellPost> findByTitle(String title);
+    Optional<SellPost> existsByMemberId(Long memberId);
 }
 

@@ -31,16 +31,6 @@ public class SellPostServiceImpl implements SellPostService{
 
         return sellPost;
     }
-    @Override
-    @Transactional(readOnly = true)
-    public SellPostDTO.SellPostCreateResponseDto getSellPostById(Long id) {
-        // ID로 게시물 조회
-        SellPost sellPost = sellPostRepository.findById(id)
-                .orElseThrow(() -> new GlobalException(GlobalErrorCode.POST_NOT_FOUND));
-
-        // 엔티티를 DTO로 변환 후 반환
-        return sellPostConverter.sellPostcreateResponseDto(sellPost);
-    }
 
     @Override
     @Transactional(readOnly = true)

@@ -27,7 +27,7 @@ public class SellPostConverter {
                 .build();
     }
 
-    public SellPostDTO.SellPostResponseDto sellPostResponseDto(SellPost sellPost) {
+    public static SellPostDTO.SellPostResponseDto sellPostResponseDto(SellPost sellPost) {
         return SellPostDTO.SellPostResponseDto.builder()
                 .sellPostId(sellPost.getSellPostId())   // 게시글 ID 설정
                 .title(sellPost.getTitle())             // 게시글 제목 설정

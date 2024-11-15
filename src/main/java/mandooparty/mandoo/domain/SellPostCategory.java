@@ -19,7 +19,9 @@ public class SellPostCategory {
     @JoinColumn(name = "categoryId", nullable = false)
     private Category category;        // 카테고리와의 관계
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sellpostId", nullable = false)
     private SellPost sellPost;        // 게시물(SellPost)와의 관계
+
 }

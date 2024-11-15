@@ -33,8 +33,8 @@ public enum GlobalErrorCode {
     
     // 409 CONFLICT : Resource 를 찾을 수 없음
     DUPLICATE_EMAIL(CONFLICT, "중복된 이메일이 존재합니다."),
-    DUPLICATE_NICKNAME(CONFLICT, "중복된 닉네임이 존재합니다.")
-    ;
+    DUPLICATE_NICKNAME(CONFLICT, "중복된 닉네임이 존재합니다."),
+    CATEGORY_NOT_FOUND(CONFLICT, "카테고리를 찾을 수 없음");
 
 
 

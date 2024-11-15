@@ -51,4 +51,12 @@ public class SellPost {
 
     @OneToMany(mappedBy = "sellPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SellPostCategory> categories; // SellPostCategory와의 연관 관계 설정
+
+    public void setCategories(List<SellPostCategory> categories) {
+        this.categories = categories;
+        for (SellPostCategory category : categories) {
+            category.setSellPost(this);
+        }
+    }
+
 }

@@ -7,6 +7,15 @@ import java.util.List;
 @Data
 public class SellPostDTO {
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SellPostWritePageDto {
+        private List<String> categories; // 모든 카테고리 이름 리스트
+    }
+
+
 
     @Builder            // 빌더 패턴을 자동 생성하여 객체 생성 시 각 필드의 값을 유연하게 설정할 수 있도록 함
     @Getter             // 모든 필드에 대한 getter 메서드를 자동 생성하여 필드 값을 읽을 수 있도록 함
@@ -21,6 +30,8 @@ public class SellPostDTO {
         private String gu;          // 구
         private String dong;        // 동
         private List<Long> categoryIds; // 카테고리 ID 리스트
+        private Long memberId;      // 게시물 작성자
+
     }
 
     @Builder
@@ -36,6 +47,7 @@ public class SellPostDTO {
         private String city;         // 시
         private String gu;           // 구
         private String dong;         // 동
+        private Long memberId;       // 게시물 작성자
         private Integer likeCount;   // 좋아요 수
         private Integer commentCount; // 댓글 수
         private LocalDateTime createdAt; // 생성일자

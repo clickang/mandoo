@@ -49,5 +49,27 @@ public class SellPostController {
         }
     }
 
+    @PutMapping("/update/{sellPostId}")
+    public ApiResponse<SellPostDTO.SellPostResponseDto> updateSellPost(
+            @PathVariable("sellPostId") Long sellPostId,
+            @RequestBody SellPostDTO.SellPostUpdateDto request) { // 요청으로 userId 받기 (로그인된 사용자 ID를 포함)
+        try {
+            SellPostDTO.SellPostResponseDto responseDto = sellPostService.updateSellPost(sellPostId, request);
+            return ApiResponse.onSuccess(responseDto);
+        } catch (GlobalException e) {
+            return ApiResponse.onFailure(e.getErrorCode(), null);
+        }
+    }
+
+    @GetMapping("/update/{sellPostId}")
+    public ApiResponse<SellPostDTO.SellPostUpdatePageDto> getSellPostUpdatePage() {
+        // 모든 카테고리 이름을 문자열 리스트로 가져옵니다.
+        List<String> categoryNames = categoryService.getAllCategory();
+        SellPostDTO.SellPostUpdatePageDto response = new SellPostDTO.SellPostUpdatePageDto(categoryNames);
+        return ApiResponse.onSuccess(response);
+    }
+
+
+
 
 }

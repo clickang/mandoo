@@ -15,6 +15,13 @@ public class SellPostDTO {
         private List<String> categories; // 모든 카테고리 이름 리스트
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SellPostUpdatePageDto {
+        private List<String> categories; // 모든 카테고리 이름 리스트
+    }
 
 
     @Builder            // 빌더 패턴을 자동 생성하여 객체 생성 시 각 필드의 값을 유연하게 설정할 수 있도록 함
@@ -66,6 +73,7 @@ public class SellPostDTO {
         private String city;        // 시
         private String gu;          // 구
         private String dong;        // 동
+        private Long memberId;
         private List<Long> categoryIds; // 카테고리 ID 리스트
     }
 

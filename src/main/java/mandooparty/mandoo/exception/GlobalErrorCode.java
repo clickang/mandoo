@@ -23,6 +23,7 @@ public enum GlobalErrorCode {
     // 401 Unauthorized - 권한 없음
     LOGIN_REQUIRED(UNAUTHORIZED, "로그인이 필요한 서비스입니다."),
     MEMBER_NOT_AUTHORIZED(UNAUTHORIZED, "접근 권한이 있는 회원이 아닙니다."),
+    USER_NOT_AUTHORIZED(UNAUTHORIZED, "사용자가 권한이 없습니다."),
 
     // 404 Not Found - 찾을 수 없음
     EMAIL_NOT_FOUND(NOT_FOUND, "존재하지 않는 이메일 입니다."),

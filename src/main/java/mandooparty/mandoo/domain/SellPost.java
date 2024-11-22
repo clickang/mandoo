@@ -2,6 +2,7 @@ package mandooparty.mandoo.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import mandooparty.mandoo.domain.common.BaseEntity;
 import mandooparty.mandoo.domain.enums.SellPostStatus;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
@@ -19,7 +20,7 @@ import java.util.List;
 @DynamicInsert
 @Table(name = "sellpost")
 
-public class SellPost {
+public class SellPost extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,10 +54,27 @@ public class SellPost {
     private List<SellPostCategory> categories; // SellPostCategory와의 연관 관계 설정
 
     public void setCategories(List<SellPostCategory> categories) {
-        this.categories = categories;
+        // 기존 컬렉션을 비웁니다.
+        this.categories.clear();
+
+        // 새 카테고리를 추가하면서 역참조 설정을 합니다.
         for (SellPostCategory category : categories) {
-            category.setSellPost(this);
+            category.setSellPost(this); // 역참조 설정
+            this.categories.add(category);
         }
     }
+
+
+    public void update(String title, int price, String description, String city, String gu, String dong, List<SellPostCategory> categories) {
+        this.title = title;
+        this.price = price;
+        this.description = description;
+        this.city = city;
+        this.gu = gu;
+        this.dong = dong;
+        setCategories(categories); // 카테고리 리스트 업데이트
+        this.modifiedAt = LocalDateTime.now(); // 수정 시간 갱신
+    }
+
 
 }

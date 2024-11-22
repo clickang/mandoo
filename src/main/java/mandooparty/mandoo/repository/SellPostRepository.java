@@ -16,5 +16,8 @@ public interface SellPostRepository extends JpaRepository<SellPost, Long> {
 
     @Query("SELECT s FROM SellPost s WHERE s.member.id = :memberId AND s.status= :status")
     List<SellPost> findByMemberAndStatus(@Param("memberId") Long memberId,@Param("status") SellPostStatus status);
+
+    Optional<SellPost> existsByMemberId(Long memberId);
+
 }
 

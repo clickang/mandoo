@@ -3,28 +3,31 @@ package mandooparty.mandoo.service.MyPageService;
 import lombok.RequiredArgsConstructor;
 import mandooparty.mandoo.domain.SellPost;
 import mandooparty.mandoo.domain.enums.SellPostStatus;
-import mandooparty.mandoo.repository.LikeRepository;
+import mandooparty.mandoo.repository.LikesRepository;
+import mandooparty.mandoo.repository.SellPostRepository;
+import mandooparty.mandoo.service.Memberserivce.MemberService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MyPageServiceImpl {
-    private final LikeRepository likeRepository;
-    public List<SellPost> getLikeSellPost(Long memberId, Integer page)
+public class MyPageServiceImpl implements MyPageService {
+    private final LikesRepository likesRepository;
+    private final SellPostRepository sellPostRepository;
+    public List<SellPost> getLikeSellPost(Long memberId)
     {
-        return likeRepository.findAllLike(memberId,page*6);//수정필요 + page 사용해야함
+        return likesRepository.findByMemberId(memberId);//수정필요 + page 사용해야함
     }
 
-    public List<SellPost> getSellPost(Long memberId, Integer page)
+    public List<SellPost> getSoldPost(Long memberId)
     {
-        return likeRepository.findAllLike(memberId, SellPostStatus.FOR_SALE,page*6);//수정필요 + page 사용해야함
+        return sellPostRepository.findByMemberAndStatus(memberId,SellPostStatus.SOLD_OUT);//수정필요 + page 사용해야함
     }
 
-    public List<SellPost> getSoldPost(Long memberId, Integer page)
+    public List<SellPost> getSellPost(Long memberId)
     {
-        return likeRepository.findAllLike(memberId,SellPostStatus.SOLD_OUT,page*6);//수정필요 + page 사용해야함
+        return sellPostRepository.findByMemberAndStatus(memberId,SellPostStatus.FOR_SALE);//수정필요 + page 사용해야함
     }
 
 }

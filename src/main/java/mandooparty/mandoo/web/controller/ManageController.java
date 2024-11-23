@@ -3,15 +3,11 @@ package mandooparty.mandoo.web.controller;
 import lombok.RequiredArgsConstructor;
 import mandooparty.mandoo.apiPayload.ApiResponse;
 import mandooparty.mandoo.converter.ManageConverter;
-import mandooparty.mandoo.converter.MemberConverter;
-import mandooparty.mandoo.converter.SellPostConverter;
-import mandooparty.mandoo.domain.ManageMember;
+import mandooparty.mandoo.domain.CommentReport;
 import mandooparty.mandoo.domain.Member;
-import mandooparty.mandoo.domain.SellPost;
 import mandooparty.mandoo.exception.GlobalException;
 import mandooparty.mandoo.service.ManageService.ManageService;
 import mandooparty.mandoo.web.dto.ManageDTO;
-import mandooparty.mandoo.web.dto.SellPostDTO;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -38,10 +34,10 @@ public class ManageController {
     }
 
     @GetMapping("/member")//관리자 페이지 회원관리
-    public ApiResponse<List<ManageDTO.ManageMemberDto>> ManageMember(@RequestParam Integer page){
-        List<ManageMember> memberList=manageService.getMember(page);
+    public ApiResponse<List<ManageDTO.ManageMemberDto>> ManageMember(){
+        List<Member> memberList=manageService.getMember();
         List<ManageDTO.ManageMemberDto> manageMemberDtoList=new ArrayList<>();
-        for(ManageMember member : memberList){//domain -> dto로 변경
+        for(Member member : memberList){//domain -> dto로 변경
             manageMemberDtoList.add(ManageConverter.ManageMemberDto(member));
         }
         try{
@@ -50,5 +46,60 @@ public class ManageController {
             return ApiResponse.onFailure(e.getErrorCode(), manageMemberDtoList);
         }
 
+    }
+
+    @GetMapping("/report/comment")
+    public ApiResponse<List<ManageDTO.CommentReportDto>> ManageCommentReport(@RequestParam(value = "order", required = false, defaultValue = "id") String order){
+
+        List<ManageDTO.CommentReportDto> commentReportDtoList=manageService.getCommentReport(order);
+        try{
+            return ApiResponse.onSuccess(commentReportDtoList);
+        }catch (GlobalException e){
+            return ApiResponse.onFailure(e.getErrorCode(),commentReportDtoList);
+        }
+    }
+
+    @GetMapping("/report/sellPost")
+    public ApiResponse<List<ManageDTO.PostReportDto>> ManagePostReport(@RequestParam(value = "order", required = false, defaultValue = "id") String order){
+
+        List<ManageDTO.PostReportDto> postReportDtoList=manageService.getPostReport(order);
+        try{
+            return ApiResponse.onSuccess(postReportDtoList);
+        }catch (GlobalException e){
+            return ApiResponse.onFailure(e.getErrorCode(),postReportDtoList);
+        }
+    }
+
+    @DeleteMapping("/member")
+    public ApiResponse deleteMember(@PathVariable Long memberId)
+    {
+        try{
+            manageService.deleteMember(memberId);
+            return ApiResponse.onSuccess(null);
+        }catch (GlobalException e){
+            return ApiResponse.onFailure(e.getErrorCode(),null);
+        }
+    }
+
+    @DeleteMapping("/report/comment")
+    public ApiResponse deleteCommentReport(@PathVariable Long commentId)
+    {
+        try{
+            manageService.deleteCommentReport(commentId);
+            return ApiResponse.onSuccess(null);
+        }catch (GlobalException e){
+            return ApiResponse.onFailure(e.getErrorCode(),null);
+        }
+    }
+
+    @DeleteMapping("/report/comment")
+    public ApiResponse deletePostReport(@PathVariable Long sellPostId)
+    {
+        try{
+            manageService.deletePostReport(sellPostId);
+            return ApiResponse.onSuccess(null);
+        }catch (GlobalException e){
+            return ApiResponse.onFailure(e.getErrorCode(),null);
+        }
     }
 }

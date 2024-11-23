@@ -1,9 +1,11 @@
 package mandooparty.mandoo.web.dto;
 
 import lombok.*;
+import mandooparty.mandoo.domain.enums.CommentStatus;
 import mandooparty.mandoo.domain.enums.MemberStatus;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ManageDTO {
@@ -67,7 +69,45 @@ public class ManageDTO {
         private Integer writeSellPostCount;
         private Integer likeSellPostCount;
         private Integer completedSellPostCount;
-        private LocalDate createdAt;
-        private LocalDate modifiedAt;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+
+
     }
+
+    @Builder
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CommentReportDto{
+        private Long commentReportId;
+        private Long commentId;
+        private String content;
+        private CommentStatus status;
+        private Long memberId;
+        private Long sellPostId;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+        private Integer commentReportCount;
+
+
+    }
+
+    @Builder
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PostReportDto{
+        private Long postReportId;
+        private Long sellPostId;
+        private Long memberId;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+        private Integer postReportCount;
+
+
+    }
+
 }

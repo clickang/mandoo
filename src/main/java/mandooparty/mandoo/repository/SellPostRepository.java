@@ -21,13 +21,15 @@ public interface SellPostRepository extends JpaRepository<SellPost, Long> {
 
     Optional<SellPost> existsByMemberId(Long memberId);
 
-    @Query("SELECT s.createdAt, COUNT(s) " +
+
+    @Query("SELECT FUNCTION('DATE', s.createdAt) AS createDate, COUNT(s) " +
             "FROM SellPost s " +
-            "GROUP BY s.createdAt " +
-            "ORDER BY s.createdAt ASC")
+            "GROUP BY FUNCTION('DATE', s.createdAt) " +
+            "ORDER BY FUNCTION('DATE', s.createdAt) ASC")
     List<Tuple> countByCreatedAt();
 
-    @Query("SELECT COUNT(m) FROM SellPost s WHERE s.createdAt=:day")
+
+    @Query("SELECT COUNT(s) FROM SellPost s WHERE FUNCTION('DATE',s.createdAt)=:day")
     Long getCountByDate(@Param("day") LocalDate day);
 
 }

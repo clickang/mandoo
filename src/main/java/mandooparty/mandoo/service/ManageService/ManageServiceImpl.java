@@ -13,13 +13,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ManageServiceImpl {
+public class ManageServiceImpl implements ManageService {
     private final SellPostRepository sellPostRepository;
     private final SellPostCategoryRepository sellPostCategoryRepository;
     private final MemberRepository memberRepository;
@@ -78,10 +79,11 @@ public class ManageServiceImpl {
         LocalDate today = LocalDate.now();
         List<ManageDTO.ManageDashBoardDateViewDto> dtoList = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
-
+            LocalDateTime startOfDay=today.atStartOfDay();
+            LocalDateTime endOfDay=startOfDay.plusDays(1);
             Integer subscriber=memberRepository.getCountByDate(today).intValue();
             Integer sellPost=sellPostRepository.getCountByDate(today).intValue();
-            Integer comment=commentRepository.getCountByDate(today).intValue();
+            Integer comment=commentRepository.getCountByDate(startOfDay,endOfDay).intValue();
             ManageDTO.ManageDashBoardDateViewDto dto=new ManageDTO.ManageDashBoardDateViewDto();
 
             dto.setDate(today);

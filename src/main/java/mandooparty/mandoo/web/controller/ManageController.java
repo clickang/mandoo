@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/manage")
 public class ManageController {
-    private ManageService manageService;
+    private final ManageService manageService;
     @GetMapping("/dashboard")//관리자 페이지 dashboard
     public ApiResponse<ManageDTO.ManageDashBoardDto> ManageDashBoard(){//데이터 양 안 정함 -> 수정 필요
         List<ManageDTO.ManageDashBoardSellPostDto> sellPostCountList=manageService.getDaySellPostCount();
@@ -38,6 +38,7 @@ public class ManageController {
         List<Member> memberList=manageService.getMember();
         List<ManageDTO.ManageMemberDto> manageMemberDtoList=new ArrayList<>();
         for(Member member : memberList){//domain -> dto로 변경
+            System.out.println("memberId: "+member.getId());
             manageMemberDtoList.add(ManageConverter.ManageMemberDto(member));
         }
         try{
@@ -92,7 +93,7 @@ public class ManageController {
         }
     }
 
-    @DeleteMapping("/report/comment")
+    @DeleteMapping("/report/sellPost")
     public ApiResponse deletePostReport(@PathVariable Long sellPostId)
     {
         try{

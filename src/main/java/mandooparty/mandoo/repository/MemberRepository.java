@@ -15,7 +15,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmail(String email);
     Optional<Member> findByNickname(String nickname);
 
-    @Query("SELECT COUNT(m) FROM Member m WHERE m.createdAt=:day")
+    @Query(value="SELECT COUNT(m) FROM Member m WHERE FUNCTION('DATE',m.createdAt)=:day",nativeQuery = true)
     Long getCountByDate(@Param("day") LocalDate day);
 
 }

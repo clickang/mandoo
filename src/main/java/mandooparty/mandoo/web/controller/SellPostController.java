@@ -18,17 +18,17 @@ public class SellPostController {
     private final SellPostService sellPostService;
     private final CategoryService categoryService;
 
-
     @PostMapping("/write")
-    public ApiResponse<SellPostDTO.SellPostResponseDto> createSellPost(@RequestBody SellPostDTO.SellPostCreateDto request) {
+    public ApiResponse<SellPostDTO.SellPostResponseDto> createSellPost(@ModelAttribute SellPostDTO.SellPostCreateDto request) {
         try {
-            SellPostDTO.SellPostResponseDto responseDto = sellPostService.SellPostcreate(request);
 
-            return ApiResponse.onSuccess(responseDto); // 생성된 게시물을 응답
+            SellPostDTO.SellPostResponseDto responseDto = sellPostService.SellPostcreate(request);
+            return ApiResponse.onSuccess(responseDto);
         } catch (GlobalException e) {
-            return ApiResponse.onFailure(e.getErrorCode(), null); // 예외 발생 시 실패 응답 반환
+            return ApiResponse.onFailure(e.getErrorCode(), null);
         }
     }
+
 
     @GetMapping("/write")
     public ApiResponse<SellPostDTO.SellPostWritePageDto> getSellPostWritePage() {

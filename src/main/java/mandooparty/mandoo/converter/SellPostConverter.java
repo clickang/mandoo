@@ -32,6 +32,8 @@ public class SellPostConverter {
                 .gu(dto.getGu())
                 .dong(dto.getDong())
                 .member(member)
+                .createdAt(LocalDateTime.now())     // 생성일자 설정
+                .modifiedAt(LocalDateTime.now())   // 수정일자 설정
                 .categories(new ArrayList<>())
                 .images(imagePaths)
                 .build();
@@ -56,6 +58,9 @@ public class SellPostConverter {
                         .map(SellPostCategory::getCategory)    // SellPostCategory에서 Category 객체 추출
                         .map(Category::getName)                // Category 객체에서 이름 추출
                         .collect(Collectors.toList()))         // 이름을 리스트로 수집하여 반환
+                .images(sellPost.getImages().stream()          // 이미지 목록 설정
+                        .map(SellImagePath::getPath)           // SellImagePath 객체에서 경로 추출
+                        .collect(Collectors.toList()))         // 경로를 리스트로 수집하여 반환
                 .build();
     }
 }

@@ -47,8 +47,6 @@ public class SellPostDTO {
         private Long memberId;
 
         private List<MultipartFile> images = new ArrayList<>(); // 기본값 설정
-
-
     }
 
     @Builder
@@ -75,6 +73,7 @@ public class SellPostDTO {
 
     @Builder
     @Getter
+    @Setter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class SellPostUpdateDto {

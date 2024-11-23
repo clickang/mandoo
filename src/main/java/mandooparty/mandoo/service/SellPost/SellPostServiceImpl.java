@@ -99,6 +99,8 @@ public class SellPostServiceImpl implements SellPostService {
         // 응답 DTO 생성
         SellPostDTO.SellPostResponseDto responseDto = SellPostConverter.sellPostResponseDto(sellPost);
 
+
+
         return responseDto;
 
     }
@@ -117,27 +119,89 @@ public class SellPostServiceImpl implements SellPostService {
     @Override
     @Transactional
     public SellPostDTO.SellPostResponseDto updateSellPost(Long sellPostId, SellPostDTO.SellPostUpdateDto request) {
+
         SellPost sellPost = sellPostRepository.findById(sellPostId)
                 .orElseThrow(() -> new GlobalException(GlobalErrorCode.POST_NOT_FOUND));
 
-        if (!Objects.equals(request.getMemberId(), sellPost.getMember().getId())) {
-            throw new GlobalException(GlobalErrorCode.MEMBER_NOT_AUTHORIZED);
+//        if (!Objects.equals(request.getMemberId(), sellPost.getMember().getId())) {
+//            throw new GlobalException(GlobalErrorCode.MEMBER_NOT_AUTHORIZED);
+//        }
+
+//        List<SellPostCategory> categories = request.getCategoryIds().stream()
+//                .map(categoryId -> sellPostCategoryRepository.findById(categoryId)
+//                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.CATEGORY_NOT_FOUND)))
+//                .collect(Collectors.toList());
+
+        // 3. 카테고리 처리 (Null 방어)
+        List<Long> categoryIds = Optional.ofNullable(request.getCategoryIds()).orElse(Collections.emptyList());
+        List<SellPostCategory> categories = categoryIds.stream()
+                .map(categoryId -> categoryRepository.findById(categoryId)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.CATEGORY_NOT_FOUND)))
+                .map(category -> SellPostCategory.builder()
+                        .sellPost(sellPost)
+                        .category(category)
+                        .build())
+                .collect(Collectors.toList());
+        sellPost.setCategories(categories);
+
+
+        // 4. 이미지 처리
+        List<MultipartFile> images = Optional.ofNullable(request.getImages()).orElse(Collections.emptyList());
+        if (!images.isEmpty()) {
+            // 4.1 기존 이미지 삭제
+            if (sellPost.getImages() != null) {
+                for (SellImagePath imagePath : sellPost.getImages()) {
+                    File file = new File(imagePath.getPath());
+                    if (file.exists() && !file.delete()) {
+                        log.warn("Failed to delete file: {}", imagePath.getPath());
+                    }
+                }
+            }
+
+            // 4.2 새 이미지 저장
+            List<SellImagePath> imagePaths = images.stream().map(file -> {
+                try {
+                    // 파일 저장
+                    String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+                    String filePath = Paths.get(uploadPath, fileName).toString();
+
+                    File directory = new File(uploadPath);
+                    if (!directory.exists() && !directory.mkdirs()) {
+                        throw new RuntimeException("Directory creation failed: " + uploadPath);
+                    }
+                    file.transferTo(new File(filePath));
+
+                    // SellImagePath 생성
+                    return SellImagePath.builder()
+                            .path(filePath)
+                            .sellPost(sellPost) // 연관 설정
+                            .build();
+
+                } catch (IOException e) {
+                    throw new RuntimeException("Failed to save file: " + file.getOriginalFilename(), e);
+                }
+            }).collect(Collectors.toList());
+
+            // 새 이미지 리스트 설정
+            sellPost.setImages(imagePaths);
         }
 
-        List<SellPostCategory> categories = request.getCategoryIds().stream()
-                .map(categoryId -> sellPostCategoryRepository.findById(categoryId)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.CATEGORY_NOT_FOUND)))
-                .collect(Collectors.toList());
+        // 3. 기본값 설정 (price가 null일 경우)
+        int price = Optional.ofNullable(request.getPrice()).orElse(0);
+
 
         sellPost.update(
                 request.getTitle(),
-                request.getPrice(),
+                price,
                 request.getDescription(),
                 request.getCity(),
                 request.getGu(),
                 request.getDong(),
-                categories
+                categories,
+                sellPost.getImages() // 최신 이미지 리스트
         );
+
+        sellPostRepository.save(sellPost);
 
         // 5. 업데이트된 엔티티를 DTO로 변환하여 반환
         return SellPostConverter.sellPostResponseDto(sellPost);

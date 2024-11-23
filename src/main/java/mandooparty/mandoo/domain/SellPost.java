@@ -83,7 +83,7 @@ public class SellPost extends BaseEntity {
 
 
     // 업데이트 메서드
-    public void update(String title, int price, String description, String city, String gu, String dong, List<SellPostCategory> categories) {
+    public void update(String title, int price, String description, String city, String gu, String dong, List<SellPostCategory> categories, List<SellImagePath> images) {
         this.title = title;
         this.price = price;
         this.description = description;
@@ -91,6 +91,7 @@ public class SellPost extends BaseEntity {
         this.gu = gu;
         this.dong = dong;
         setCategories(categories); // 카테고리 리스트 업데이트
+        setImages(images);
         this.modifiedAt = LocalDateTime.now(); // 수정 시간 갱신
     }
 

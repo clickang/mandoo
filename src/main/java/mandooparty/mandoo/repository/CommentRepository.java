@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment,Long> {
 
-
     @Query(value="SELECT COUNT(*) FROM Comment as c WHERE DATE(c.created_at)=:day;",nativeQuery = true)
     Long getCountByDate(@Param("day") LocalDate day);
 }

@@ -1,15 +1,15 @@
 package mandooparty.mandoo.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import mandooparty.mandoo.domain.common.BaseEntity;
 import mandooparty.mandoo.domain.enums.CommentStatus;
 
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "comment")
 public class Comment extends BaseEntity {
 

@@ -3,10 +3,12 @@ package mandooparty.mandoo.domain;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 import mandooparty.mandoo.domain.common.BaseEntity;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @Table(name = "postReport")
 public class PostReport extends BaseEntity {

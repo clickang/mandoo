@@ -19,7 +19,7 @@ public class SellPostController {
     private final CategoryService categoryService;
 
     @PostMapping("/write")
-    public ApiResponse<SellPostDTO.SellPostResponseDto> createSellPost(@RequestBody SellPostDTO.SellPostCreateDto request) {
+    public ApiResponse<SellPostDTO.SellPostResponseDto> createSellPost(@ModelAttribute SellPostDTO.SellPostCreateDto request) {
         try {
 
             SellPostDTO.SellPostResponseDto responseDto = sellPostService.SellPostcreate(request);

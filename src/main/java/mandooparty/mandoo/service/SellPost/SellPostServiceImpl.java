@@ -148,6 +148,7 @@ public class SellPostServiceImpl implements SellPostService {
         // 4. 이미지 처리
         List<MultipartFile> images = Optional.ofNullable(request.getImages()).orElse(Collections.emptyList());
 
+
         // 기존 이미지 삭제 및 새 이미지 추가
         if (!images.isEmpty()) {
             if (sellPost.getImages() != null) {
@@ -165,11 +166,10 @@ public class SellPostServiceImpl implements SellPostService {
                     }
                     file.transferTo(new File(filePath));
 
+
                     return SellImagePath.builder()
                             .path(filePath)
                             .sellPost(sellPost)
-                            .build();
-
                 } catch (IOException e) {
                     throw new RuntimeException("Failed to save file: " + file.getOriginalFilename(), e);
                 }
@@ -187,6 +187,7 @@ public class SellPostServiceImpl implements SellPostService {
                 request.getCity(),
                 request.getGu(),
                 request.getDong(),
+
                 categories
         );
 

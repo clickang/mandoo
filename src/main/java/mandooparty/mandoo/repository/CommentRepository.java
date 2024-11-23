@@ -14,9 +14,6 @@ import java.time.LocalDateTime;
 public interface CommentRepository extends JpaRepository<Comment,Long> {
 
 
-//    @Query("SELECT COUNT(c) FROM Comment c WHERE c.createdAt >= :startOfDay AND c.createdAt<:endOfDay")
-//    Long getCountByDate(@Param("startOfDay") LocalDateTime startOfDay, @Param("endOfDay")LocalDateTime endOfDay);
-
-    @Query("SELECT COUNT(c) FROM Comment c WHERE c.createdAt >= :startOfDay AND c.createdAt<:endOfDay")
-    Long getCountByDate(@Param("startOfDay") LocalDateTime startOfDay, @Param("endOfDay")LocalDateTime endOfDay);
+    @Query(value="SELECT COUNT(*) FROM Comment as c WHERE DATE(c.created_at)=:day;",nativeQuery = true)
+    Long getCountByDate(@Param("day") LocalDate day);
 }

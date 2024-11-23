@@ -48,7 +48,7 @@ public class ManageDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ManageDashBoardDto{
-        private List<ManageDashBoardSellPostDto> sellPostCont;
+        private List<ManageDashBoardSellPostDto> sellPostCount;
         private List<ManageDashBoardCategoryRatioDto> categoryRatio;
 
         private List<ManageDashBoardDateViewDto> dateView;

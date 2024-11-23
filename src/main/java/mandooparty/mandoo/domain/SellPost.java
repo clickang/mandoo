@@ -8,8 +8,8 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Getter
@@ -19,7 +19,6 @@ import java.util.List;
 @DynamicUpdate
 @DynamicInsert
 @Table(name = "sellpost")
-
 public class SellPost extends BaseEntity {
 
     @Id
@@ -38,10 +37,10 @@ public class SellPost extends BaseEntity {
     private Member member;          // 작성자 (Member와 연관 관계 설정)
 
     @Builder.Default
-    private Integer commentCount = 0;       // 조회수
+    private Integer commentCount = 0; // 조회수
 
     @Builder.Default
-    private Integer likeCount = 0;       // 좋아요 수
+    private Integer likeCount = 0; // 좋아요 수
 
     private String city;    // 판매자 지역 주소 (시)
     private String gu;      // 판매자 지역 주소 (구)
@@ -51,20 +50,34 @@ public class SellPost extends BaseEntity {
     private LocalDateTime modifiedAt = LocalDateTime.now(); // 수정 일자
 
     @OneToMany(mappedBy = "sellPost", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SellPostCategory> categories; // SellPostCategory와의 연관 관계 설정
 
+    private List<SellPostCategory> categories = new ArrayList<>(); // SellPostCategory와의 연관 관계 설정
+
+    @OneToMany(mappedBy = "sellPost", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<SellImagePath> images = new ArrayList<>(); // SellImagePath와의 연관 관계 설정
+
+    // 카테고리 설정 메서드
     public void setCategories(List<SellPostCategory> categories) {
-        // 기존 컬렉션을 비웁니다.
         this.categories.clear();
-
-        // 새 카테고리를 추가하면서 역참조 설정을 합니다.
+        System.out.println("SellPost Entity Category: " + categories);
         for (SellPostCategory category : categories) {
-            category.setSellPost(this); // 역참조 설정
+            category.setSellPost(this);
             this.categories.add(category);
         }
     }
 
+    public void setImages(List<SellImagePath> images) {
+        this.images.clear();
 
+        System.out.println("SellPost Entity Image: " + images);
+        for (SellImagePath image : images) {
+            image.setSellPost(this);
+            this.images.add(image);
+        }
+    }
+
+
+    // 업데이트 메서드
     public void update(String title, int price, String description, String city, String gu, String dong, List<SellPostCategory> categories) {
         this.title = title;
         this.price = price;

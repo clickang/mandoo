@@ -29,7 +29,7 @@ public interface SellPostRepository extends JpaRepository<SellPost, Long> {
     List<Tuple> countByCreatedAt();
 
 
-    @Query("SELECT COUNT(s) FROM SellPost s WHERE FUNCTION('DATE',s.createdAt)=:day")
+    @Query(value="SELECT COUNT(*) FROM SellPost as s WHERE DATE(s.created_at)=:day",nativeQuery = true)
     Long getCountByDate(@Param("day") LocalDate day);
 
 }

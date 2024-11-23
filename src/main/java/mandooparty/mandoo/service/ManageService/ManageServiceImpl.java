@@ -35,7 +35,7 @@ public class ManageServiceImpl implements ManageService {
 
         for (Tuple tuple : result) {
             // Tuple에서 값을 추출
-            LocalDate date = tuple.get(0, LocalDate.class);  // 첫 번째 값은 날짜
+            LocalDate date = tuple.get(0, java.sql.Date.class).toLocalDate();  // 첫 번째 값은 날짜
             Long sellPostCount = tuple.get(1, Long.class);   // 두 번째 값은 sellpost 개수
 
             // DTO 객체 생성하여 리스트에 추가
@@ -78,12 +78,12 @@ public class ManageServiceImpl implements ManageService {
     {
         LocalDate today = LocalDate.now();
         List<ManageDTO.ManageDashBoardDateViewDto> dtoList = new ArrayList<>();
-        for (int i = 0; i < 7; i++) {
-            LocalDateTime startOfDay=today.atStartOfDay();
-            LocalDateTime endOfDay=startOfDay.plusDays(1);
+        for (int i = 0; i < 2; i++) {
+//            LocalDateTime startOfDay=today.atStartOfDay();
+//            LocalDateTime endOfDay=startOfDay.plusDays(1);
             Integer subscriber=memberRepository.getCountByDate(today).intValue();
             Integer sellPost=sellPostRepository.getCountByDate(today).intValue();
-            Integer comment=commentRepository.getCountByDate(startOfDay,endOfDay).intValue();
+            Integer comment=commentRepository.getCountByDate(today).intValue();
             ManageDTO.ManageDashBoardDateViewDto dto=new ManageDTO.ManageDashBoardDateViewDto();
 
             dto.setDate(today);

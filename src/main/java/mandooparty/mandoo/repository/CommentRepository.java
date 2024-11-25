@@ -15,4 +15,7 @@ public interface CommentRepository extends JpaRepository<Comment,Long> {
 
     @Query(value="SELECT COUNT(*) FROM Comment as c WHERE DATE(c.created_at)=:day;",nativeQuery = true)
     Long getCountByDate(@Param("day") LocalDate day);
+
+//    @Query("DELETE FROM Comment as c WHERE c.id=:commentId")
+//    void deleteById(Long commentId);
 }

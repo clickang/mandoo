@@ -50,10 +50,10 @@ public class ReportServiceImpl implements ReportService{
     public CommentReport createCommentReport(Long commentId, Long memberId) {
         Optional<Member> findMember=memberRepository.findById(memberId);
         Optional<Comment> findComment=commentRepository.findById(commentId);
-
+        System.out.println("commentId: "+commentId);
         if(findMember.isEmpty()){
             throw new GlobalException(GlobalErrorCode.INVALID_MEMBER_STATUS);
-        }else if(findComment.isPresent()){
+        }else if(findComment.isEmpty()){
             throw new GlobalException(GlobalErrorCode.COMMENT_NOT_FOUND);
         }else{
             Member member=findMember.get();

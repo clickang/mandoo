@@ -10,4 +10,5 @@ public interface CommentReportRepository extends JpaRepository<CommentReport,Lon
 
     Optional<CommentReport> findByCommentAndMember(Comment comment, Member member);
 
+    CommentReport findByComment(Comment comment);
 }

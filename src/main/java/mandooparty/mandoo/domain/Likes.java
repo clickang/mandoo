@@ -1,14 +1,14 @@
 package mandooparty.mandoo.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import mandooparty.mandoo.domain.common.BaseEntity;
 
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "likes")
 public class Likes extends BaseEntity {
     @Id

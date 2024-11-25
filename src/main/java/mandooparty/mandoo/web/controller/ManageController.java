@@ -38,7 +38,6 @@ public class ManageController {
         List<Member> memberList=manageService.getMember();
         List<ManageDTO.ManageMemberDto> manageMemberDtoList=new ArrayList<>();
         for(Member member : memberList){//domain -> dto로 변경
-            System.out.println("memberId: "+member.getId());
             manageMemberDtoList.add(ManageConverter.ManageMemberDto(member));
         }
         try{
@@ -83,7 +82,7 @@ public class ManageController {
     }
 
     @DeleteMapping("/report/comment")
-    public ApiResponse deleteCommentReport(@PathVariable Long commentId)
+    public ApiResponse deleteCommentReport(@RequestParam(value="commentId") Long commentId)
     {
         try{
             manageService.deleteCommentReport(commentId);
@@ -94,7 +93,7 @@ public class ManageController {
     }
 
     @DeleteMapping("/report/sellPost")
-    public ApiResponse deletePostReport(@PathVariable Long sellPostId)
+    public ApiResponse deletePostReport(@RequestParam(value = "sellPostId") Long sellPostId)
     {
         try{
             manageService.deletePostReport(sellPostId);

@@ -9,9 +9,12 @@ import mandooparty.mandoo.exception.GlobalErrorCode;
 import mandooparty.mandoo.exception.GlobalException;
 import mandooparty.mandoo.repository.*;
 import mandooparty.mandoo.web.dto.ManageDTO;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ public class ManageServiceImpl implements ManageService {
     private final CommentRepository commentRepository;
     private final CommentReportRepository commentReportRepository;
     private final PostReportRepository postReportRepository;
+    private final LikesRepository likesRepository;
     public List<ManageDTO.ManageDashBoardSellPostDto> getDaySellPostCount(){
         List<Tuple> result = sellPostRepository.countByCreatedAt();
 
@@ -97,7 +101,9 @@ public class ManageServiceImpl implements ManageService {
     }
 
     public List<Member> getMember(){
-        return memberRepository.findAll();
+        LocalDate today=LocalDate.now();
+        LocalDate sixMonthsAgo=today.minusMonths(6);
+        return memberRepository.findByLoginTime(sixMonthsAgo);
     };
 
     public List<ManageDTO.CommentReportDto> getCommentReport(String order)
@@ -140,19 +146,20 @@ public class ManageServiceImpl implements ManageService {
         Optional<Comment> deleteComment=commentRepository.findById(commentId);
 
         if(deleteComment.isPresent()) {
-            memberRepository.deleteById(commentId);
+            commentRepository.delete(deleteComment.get());
         }else{
-            throw new GlobalException(GlobalErrorCode.MEMBER_NOT_FOUND);
+            throw new GlobalException(GlobalErrorCode.COMMENT_NOT_FOUND);
         }
     }
 
     public void deletePostReport(Long sellPostId){
-        Optional<Comment> deletePost=commentRepository.findById(sellPostId);
-
+        Optional<SellPost> deletePost=sellPostRepository.findById(sellPostId);
         if(deletePost.isPresent()) {
-            memberRepository.deleteById(sellPostId);
+//            PostReport postReport=postReportRepository.findBySellPost(deletePost.get());
+//            postReportRepository.delete(postReport);
+            sellPostRepository.deleteById(sellPostId);
         }else{
-            throw new GlobalException(GlobalErrorCode.MEMBER_NOT_FOUND);
+            throw new GlobalException(GlobalErrorCode.POST_NOT_FOUND);
         }
     }
 

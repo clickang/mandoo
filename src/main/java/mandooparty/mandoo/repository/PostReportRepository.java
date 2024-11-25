@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface PostReportRepository extends JpaRepository<PostReport,Long> {
 
     Optional<PostReport> findBySellPostAndMember(SellPost sellPost, Member member);
+
+    PostReport findBySellPost(SellPost sellPost);
 }

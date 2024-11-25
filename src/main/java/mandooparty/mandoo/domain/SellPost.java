@@ -50,11 +50,19 @@ public class SellPost extends BaseEntity {
     private LocalDateTime modifiedAt = LocalDateTime.now(); // 수정 일자
 
     @OneToMany(mappedBy = "sellPost", cascade = CascadeType.ALL, orphanRemoval = true)
-
     private List<SellPostCategory> categories = new ArrayList<>(); // SellPostCategory와의 연관 관계 설정
 
     @OneToMany(mappedBy = "sellPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SellImagePath> images = new ArrayList<>(); // SellImagePath와의 연관 관계 설정
+
+    @OneToMany(mappedBy = "sellPost",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Likes> likes=new ArrayList<>();
+
+    @OneToMany(mappedBy = "sellPost",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Comment> comments=new ArrayList<>();
+
+    @OneToMany(mappedBy = "sellPost",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<PostReport> postReports=new ArrayList<>();
 
     // 카테고리 설정 메서드
     public void setCategories(List<SellPostCategory> categories) {

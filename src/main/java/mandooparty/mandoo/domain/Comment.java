@@ -5,6 +5,9 @@ import lombok.*;
 import mandooparty.mandoo.domain.common.BaseEntity;
 import mandooparty.mandoo.domain.enums.CommentStatus;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -30,4 +33,7 @@ public class Comment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sellpostId", nullable = false)
     private SellPost sellPost;        // 게시물(SellPost)와의 관계
+
+    @OneToMany(mappedBy = "comment",cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<CommentReport> commentReports=new ArrayList<>();
 }

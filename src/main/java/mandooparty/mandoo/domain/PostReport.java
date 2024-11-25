@@ -1,15 +1,15 @@
 package mandooparty.mandoo.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import mandooparty.mandoo.domain.common.BaseEntity;
 
 @Entity
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(name = "postReport")
 public class PostReport extends BaseEntity {
     @Id
@@ -24,6 +24,6 @@ public class PostReport extends BaseEntity {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sellPostId", nullable = false)
+    @JoinColumn(name = "sellpostId", nullable = false)
     private SellPost sellPost;        // 게시물과의 관계
 }

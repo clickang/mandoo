@@ -47,6 +47,8 @@ public class ManageConverter {
                 .writerId(postReport.getSellPost().getMember().getId())
                 .memberId(postReport.getMember().getId())
                 .createdAt(postReport.getCreatedAt())
+                .memberId(postReport.getMember().getId())
+                .createdAt(postReport.getUpdateAt())
                 .modifiedAt(postReport.getUpdateAt())
                 .postReportCount(postReport.getPostReportCount())
                 .build();

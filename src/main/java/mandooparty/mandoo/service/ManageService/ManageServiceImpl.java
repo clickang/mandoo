@@ -67,11 +67,16 @@ public class ManageServiceImpl implements ManageService {
             String name = tuple.get(0, String.class);  // 첫 번째 값은 날짜
             Long categoryCount = tuple.get(1, Long.class);   // 두 번째 값은 sellpost 개수
             Double ratio = tuple.get(2, Double.class);
+
             // DTO 객체 생성하여 리스트에 추가
             ManageDTO.ManageDashBoardCategoryRatioDto dto = new ManageDTO.ManageDashBoardCategoryRatioDto();
             dto.setName(name);  // 날짜 설정
             dto.setCategoryCount(categoryCount.intValue());  // 개수 설정 (Long -> Integer로 변환)
+
             dto.setRatio((int) Math.round(ratio));
+
+
+
             dtoList.add(dto);  // 리스트에 추가
         }
 
@@ -82,6 +87,7 @@ public class ManageServiceImpl implements ManageService {
     {
         LocalDate today = LocalDate.now();
         List<ManageDTO.ManageDashBoardDateViewDto> dtoList = new ArrayList<>();
+
         for (int i = 0; i < 7; i++) {
 //            LocalDateTime startOfDay=today.atStartOfDay();
 //            LocalDateTime endOfDay=startOfDay.plusDays(1);
@@ -100,6 +106,7 @@ public class ManageServiceImpl implements ManageService {
         return dtoList;
     }
 
+
     public List<Member> getMember(String order){
         LocalDate today=LocalDate.now();
         LocalDate sixMonthsAgo=today.minusMonths(6);
@@ -109,9 +116,11 @@ public class ManageServiceImpl implements ManageService {
 
     public List<ManageDTO.CommentReportDto> getCommentReport(String order)
     {
+
         if ("created_at".equals(order)) {
             order = "createdAt";
         }
+
         Sort sort = Sort.by(Sort.Direction.ASC, order);
         List<CommentReport> commentReportList=commentReportRepository.findAll(sort);
 
@@ -128,6 +137,7 @@ public class ManageServiceImpl implements ManageService {
         if ("created_at".equals(order)) {
             order = "createdAt";
         }
+
         Sort sort = Sort.by(Sort.Direction.ASC, order);
         List<PostReport> postReportList=postReportRepository.findAll(sort);
 

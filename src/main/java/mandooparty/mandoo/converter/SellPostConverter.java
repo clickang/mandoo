@@ -7,7 +7,6 @@ import mandooparty.mandoo.domain.SellPostCategory;
 import mandooparty.mandoo.domain.SellImagePath;
 import mandooparty.mandoo.web.dto.SellPostDTO;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,7 +63,7 @@ public class SellPostConverter {
                 .build();
     }
 
-}
+
     public static SellPostDTO.SellPostResponseDto sellPostGetResponse(SellPost sellPost) {
         return SellPostDTO.SellPostResponseDto.builder()
                 .sellPostId(sellPost.getSellPostId())   // 게시글 ID 설정
